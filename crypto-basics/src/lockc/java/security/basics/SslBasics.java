@@ -40,7 +40,7 @@ import java.util.Date;
  * keytool -printcert -file mycert.cer
  *
  */
-public class KeyStoreBasics {
+public class SslBasics {
     
     public static void main(String[] args) throws Exception {
     
