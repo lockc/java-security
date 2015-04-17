@@ -8,87 +8,66 @@ import java.security.KeyStore;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.Date;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509KeyManager;
 
-/**
- * 
- * @author lockc
- * 
- * keytool -genkeypair 
- *         -dname "cn=Chris Lock, ou=Clockworks, o=Clock Enterprise, c=UK" 
- *         -alias Clockworks 
- *         -keypass pa55word 
- *         -keystore mykeystore.jks 
- *         -storepass p4ssword 
- *         -validity 3560 
- *         -storetype JKS
- * 
- * keytool -genkeypair 
- *         -keyalg RSA 
- *         -sigalg SHA512withRSA
- *         -dname "cn=Chris Lock, ou=Clockworks, o=Clock Enterprise, c=UK" 
- *         -alias Clockworks 
- *         -keypass pa55word 
- *         -keystore my-rsa-keystore.jks 
- *         -storepass p4ssword 
- *         -validity 3560 
- *         -storetype JKS
- *
- * keytool -exportcert -file mycert.cer -alias Clockworks -keystore mykeystore.jks -storepass p4ssword -rfc 
- * 
- * keytool -printcert -file mycert.cer
- *
- */
-public class SslBasics {
+public class SslBasics implements Constants {
     
     public static void main(String[] args) throws Exception {
     
         
-        String alias = "Clockworks";
-        char[] storepass = { 'p', '4', 's', 's', 'w', 'o', 'r', 'd' };
-        char[] keypass = { 'p', 'a', '5', '5', 'w', 'o', 'r', 'd' };
-        
-        /*
-         * Create a key store object and load our actual key store file into it
-         */
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         InputStream is = new FileInputStream(new File("my-SHA512withRSA-keystore.jks"));
-//        InputStream is = new FileInputStream(new File("my-rsa-keystore.jks"));
-//        InputStream is = new FileInputStream(new File("my-default-keystore.jks"));
         keyStore.load(is, storepass);
         
-        Certificate cert = keyStore.getCertificate(alias);
-        System.out.println(cert);
         
-        String temp = keyStore.getCertificateAlias(cert);
-        System.out.println(temp);
+        System.out.println(keyStore.getCertificate(alias));
         
-        Date creationDate = keyStore.getCreationDate(alias);
-        System.out.println(creationDate);
+        Certificate[] certChain = keyStore.getCertificateChain(alias);
         
-        /*
-         * Returns the private key in this situation
-         */
-        Key key = keyStore.getKey(alias, keypass);
-        System.out.println(key.getFormat());
-        System.out.println(key.getAlgorithm());
-        System.out.println(key);
+        for(Certificate cert : certChain) {
+            
+            System.out.println();
+            
+        }
         
         /*
-         * Same as above really in this situation
+         * Key managers
          */
-        KeyStore.ProtectionParameter protParam =
-                new KeyStore.PasswordProtection(keypass);
-        PrivateKeyEntry pkEntry = (PrivateKeyEntry) keyStore.getEntry(alias, protParam);
-        Certificate cert2 = pkEntry.getCertificate();
-//        System.out.println(cert2);  // same as cert above
+        KeyManagerFactory kmFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        kmFactory.init(keyStore, keypass);
+        
+        for(KeyManager km : kmFactory.getKeyManagers()) {
+            
+            X509KeyManager kmX509 = (X509KeyManager) km;
+            
+            X509Certificate[] x509CertChain = kmX509.getCertificateChain(alias);
+            
+            
+            System.out.println(kmX509.getServerAliases("SHA512withRSA", null));
+            
+            
+            for(X509Certificate x509Cert : x509CertChain) {
+                
+                
+                System.out.println(x509Cert.getIssuerDN());
+                System.out.println(x509Cert.getSubjectDN());
+                
+            }
+            
+        }
         
         
-        PrivateKey privateKey = pkEntry.getPrivateKey();
-        System.out.println(privateKey.getFormat());
-        System.out.println(privateKey.getAlgorithm());
-        System.out.println(privateKey);
+        /*
+         * Trust managers
+         */
+        TrustManager trustManager;
+        
                 
     }
     

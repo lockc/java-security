@@ -4,7 +4,7 @@ A look into the Java standard library for crytographic security features
 
 
 
-Some JKS files rquired by the examples can be generated using these ```keytool``` commands
+Some JKS files required by the examples can be generated using these ```keytool``` commands
 
 
 ```

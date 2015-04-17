@@ -10,16 +10,14 @@ import java.security.Signature;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.cert.Certificate;
 
-public class SignatureBasics {
+public class SignatureBasics implements Constants {
     
     private static KeyStore keyStore;
     private static PrivateKey privateKey;
     private static PublicKey publicKey;
     
     private static String keyStoreFile = "my-SHA512withRSA-keystore.jks";
-    private static String alias = "Clockworks";
-    private static char[] storepass = { 'p', '4', 's', 's', 'w', 'o', 'r', 'd' };
-    private static char[] keypass = { 'p', 'a', '5', '5', 'w', 'o', 'r', 'd' };
+    
     
     public static void main(String[] args) throws Exception {
     

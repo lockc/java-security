@@ -10,45 +10,10 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.Date;
 
-
-/**
- * 
- * @author lockc
- * 
- * keytool -genkeypair 
- *         -dname "cn=Chris Lock, ou=Clockworks, o=Clock Enterprise, c=UK" 
- *         -alias Clockworks 
- *         -keypass pa55word 
- *         -keystore mykeystore.jks 
- *         -storepass p4ssword 
- *         -validity 3560 
- *         -storetype JKS
- * 
- * keytool -genkeypair 
- *         -keyalg RSA 
- *         -sigalg SHA512withRSA
- *         -dname "cn=Chris Lock, ou=Clockworks, o=Clock Enterprise, c=UK" 
- *         -alias Clockworks 
- *         -keypass pa55word 
- *         -keystore my-rsa-keystore.jks 
- *         -storepass p4ssword 
- *         -validity 3560 
- *         -storetype JKS
- *
- * keytool -exportcert -file mycert.cer -alias Clockworks -keystore mykeystore.jks -storepass p4ssword -rfc 
- * 
- * keytool -printcert -file mycert.cer
- *
- */
-public class KeyStoreBasics {
+public class KeyStoreBasics implements Constants {
     
     public static void main(String[] args) throws Exception {
-    
-        
-        String alias = "Clockworks";
-        char[] storepass = { 'p', '4', 's', 's', 'w', 'o', 'r', 'd' };
-        char[] keypass = { 'p', 'a', '5', '5', 'w', 'o', 'r', 'd' };
-        
+            
         /*
          * Create a key store object and load our actual key store file into it
          */

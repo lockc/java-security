@@ -2,7 +2,7 @@ package lockc.java.security.basics;
 
 import java.security.MessageDigest;
 
-public class MessageDigestBasics {
+public class MessageDigestBasics implements Constants {
     
     public static void main(String[] args) throws Exception {
     
